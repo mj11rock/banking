@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+service AuthService{
+    rpc Login(loginData) returns(token) {}
+    rpc Register(registerData) returns(acknowledgement){}
+    rpc Logout(token) returns(acknowledgement) {}
+    rpc CheckToken(token) returns(acknowledgement) {}
+    rpc getEmail(token) returns(email) {}
+
+}
+
+message email {
+    string email = 1;
+}
+message token {
+    string jwt_token = 1;
+}
+message acknowledgement {
+    bool isOk = 1;
+}
+message loginData{
+    string email = 1;
+    string password = 2;
+}
+
+message registerData{
+    string email = 1;
+    string password = 2;
+    string name = 3;
+}

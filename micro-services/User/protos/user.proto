@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+service UserService{
+    
+    rpc createUser(userCreate) returns(acknowledgement) {}
+    rpc getUser(userData) returns(userData) {}
+    rpc checkLogin(userData) returns(id) {}
+
+    rpc getConfig(userData) returns(configs) {}
+    rpc setConfig(configs) returns(acknowledgement) {}
+
+    rpc addCard(cardProps) returns(acknowledgement) {}
+    rpc editCard(cardData) returns(acknowledgement) {}
+    rpc deleteCard(cardData) returns(acknowledgement) {}
+    rpc getCards(cardProps) returns(cards) {}
+}
+message configs{
+    string name = 1;
+    int32 amount = 2;
+    string text = 3;
+}
+message acknowledgement {
+    bool isOk = 1;
+}
+message userCreate { 
+    string email = 1;
+    string password = 2;
+    string name = 3;
+    int32 cardNumber = 4;
+    string configs = 5;
+}
+message userData {
+    string email = 1;
+    string password = 2;
+}
+message cardProps {
+    string cardOwner = 1;
+    string cardNumber = 2;   
+}
+message cardData{
+    int32 cardIndex = 1;
+    string cardOwner = 2;
+    string cardNumber = 3;
+}
+message cards{
+    string cards = 1;
+}
+message id{
+    string id = 1;
+}
