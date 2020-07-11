@@ -63,45 +63,6 @@ async function login(ctx) {
     console.log(err)
     ctx.res = {jwtToken: null}
   }
-  // userServiceCLient
-  //   .checkLogin({email, password})
-  //   .then((result) => {
-  //     // console.log(result)
-  //     if (!result.okey) ctx.res = {okey: false}
-
-  //     const iat = +new Date()
-  //     const unique = uuidv4() //generate uuid;
-  //     token = jwt.sign(
-  //       {
-  //         token_id: unique,
-  //         email,
-  //         iat,
-  //         eat: iat + 600,
-  //       },
-  //       SECRET_KEY,
-  //       {expiresIn: "10m"}
-  //     )
-
-  //     let dbo = db.db("AuthService")
-  //     dbo
-  //       .collection("Token")
-  //       .insertOne(
-  //         {_id: unique, token: token, iat, eat: iat + 30},
-  //         (insertErr, res) => {
-  //           return new Promise((resolve, reject) => {
-  //             if (insertErr) {
-  //               console.log("Error while inserting token")
-  //               reject({jwtToken: null})
-  //             }
-  //             resolve({jwtToken: token})
-  //           })
-  //         }
-  //       )
-  //   })
-  //   .catch((err) => {
-  //     console.log("Error: ", err)
-  //     ctx.res = {jwtToken: token}
-  //   })
 }
 
 async function logout(ctx) {}
@@ -137,7 +98,25 @@ async function register(ctx) {
   ctx.res = {okey: true}
 }
 
-async function checkToken(ctx) {}
+async function checkToken(ctx) {
+  console.log("Check Token procedure")
+
+  const {token} = ctx.request.req
+
+  let dbo = db.db("AuthService")
+
+  dbo.collection("Token").findOne({token}, (err, res) => {
+    console.log("Token Check Operation started")
+    if (err) {
+      console.log("Error")
+      ctx.res = {okey: false}
+    } else {
+      console.log("Token Check Success")
+      ctx.res = {okey: true}
+    }
+  })
+  ctx.res = {okey: true}
+}
 
 async function getEmail(ctx) {}
 

@@ -67,6 +67,18 @@ app.post("/register", (req, res) => {
     .catch((err) => console.log("Error: ", err))
 })
 
+app.post("/checkToken", (req, res) => {
+  console.log("Check Token Started...")
+
+  const {token} = req.body
+  AuthServiceClient.checkToken(token).then((result) => {
+    if (!result.okey) {
+      res.send({okey: false})
+      return
+    }
+    res.send({okey: true})
+  })
+})
 // server starts
 app.listen(port, () =>
   console.log(`REST API is listening at http://localhost:${port}\n\n`)
