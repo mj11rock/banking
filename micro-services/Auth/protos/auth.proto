@@ -8,15 +8,16 @@ service AuthService{
     rpc getEmail(token) returns(email) {}
 
 }
+message Empty {}
 
-message email {
+message email{
     string email = 1;
 }
 message token {
     string jwt_token = 1;
 }
-message acknowledgement {
-    bool isOk = 1;
+message acknowledgement{
+    bool okey = 1;
 }
 message loginData{
     string email = 1;

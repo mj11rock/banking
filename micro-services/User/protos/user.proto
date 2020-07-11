@@ -2,9 +2,9 @@ syntax = "proto3";
 
 service UserService{
     
-    rpc createUser(userCreate) returns(acknowledgement) {}
-    rpc getUser(userData) returns(userData) {}
-    rpc checkLogin(userData) returns(id) {}
+    rpc createUser(usersAllInfo) returns(acknowledgement) {}
+    rpc getUser(userData) returns(usersAllInfo) {}
+    rpc checkLogin(userData) returns(acknowledgement) {}
 
     rpc getConfig(userData) returns(configs) {}
     rpc setConfig(configs) returns(acknowledgement) {}
@@ -19,10 +19,10 @@ message configs{
     int32 amount = 2;
     string text = 3;
 }
-message acknowledgement {
-    bool isOk = 1;
+message acknowledgement{
+    bool okey = 1;
 }
-message userCreate { 
+message usersAllInfo { 
     string email = 1;
     string password = 2;
     string name = 3;

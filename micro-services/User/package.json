@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.4",
-    "grpc": "^1.24.3"
+    "grpc": "^1.24.3",
+    "mali": "^0.21.0",
+    "mongodb": "^3.5.9"
   }
 }

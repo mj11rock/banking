@@ -15,8 +15,8 @@ message email {
 message token {
     string jwt_token = 1;
 }
-message acknowledgement {
-    bool isOk = 1;
+message acknowledgement{
+    bool okey = 1;
 }
 message loginData{
     string email = 1;

@@ -5,5 +5,7 @@ services:
     container_name: mongodb
     image: mongo:4.0.4
     restart: always
+    volumes:
+      - "cards"
     ports:
       - "27020:27017"
