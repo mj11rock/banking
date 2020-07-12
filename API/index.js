@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 // todo use app.post('requestedPath', (req, res) => {})
 app.post("/login", (req, res) => {
   if (!req.body) res.send({okey: false})
-  const {email, password} = req.body
+
   AuthServiceClient.login(req.body)
     .then((result) => {
       console.log("resolve: ", result)

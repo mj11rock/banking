@@ -62,6 +62,7 @@ async function login(ctx) {
   } catch (err) {
     console.log(err)
     ctx.res = {jwtToken: null}
+    return
   }
 }
 
