@@ -79,6 +79,23 @@ app.post("/checkToken", (req, res) => {
     res.send({okey: true})
   })
 })
+
+app.post("/logout", (req, res) => {
+  console.log("Logout Started")
+
+  const {jwtToken} = req.body
+  console.log(jwtToken)
+
+  AuthServiceClient.logout({jwtToken})
+    .then((result) => {
+      if (!result.okey) {
+        res.send({okey: false})
+        return
+      }
+      res.send({okey: true})
+    })
+    .catch((err) => console.log("Error: ", err))
+})
 // server starts
 app.listen(port, () =>
   console.log(`REST API is listening at http://localhost:${port}\n\n`)

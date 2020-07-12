@@ -4,7 +4,7 @@ const isEmailValid = function (email) {
   return email.match(emailRegExp)
 }
 const isPassValid = function (email) {
-  const passRegExp = /[\d\w]{4,}/
+  const passRegExp = /[\d\w]{1,}/
 
   return email.match(passRegExp)
 }

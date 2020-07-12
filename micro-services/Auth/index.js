@@ -65,14 +65,37 @@ async function login(ctx) {
   }
 }
 
-async function logout(ctx) {}
+async function deleteToken(token) {
+  let dbo = db.db("AuthService")
+  return new Promise((resolve, reject) => {
+    dbo.collection("Token").findOneAndDelete({token}, (err, res) => {
+      console.log("deleting token from db")
+      if (err) reject(err)
+      else resolve(res)
+    })
+  })
+}
+
+async function logout(ctx) {
+  console.log("Loggout procedure")
+
+  const {jwtToken} = ctx.request.req
+
+  const result = await deleteToken(jwtToken)
+  try {
+    console.log("deleted: ", result.token)
+    ctx.res = {okey: true}
+  } catch (err) {
+    console.log("Caught an Error: ", err)
+    ctx.res = {okey: false}
+  }
+}
 
 async function register(ctx) {
   console.log("Registration Procedure")
   const {email, password, name} = ctx.request.req
   let {cards} = ctx.request.req
-  // cards = new Array()
-  cards = [1, 2]
+  cards = new Array()
   const defaultData = {
     email,
     password,
@@ -81,21 +104,31 @@ async function register(ctx) {
     configs: {},
   }
 
-  // if (isEmailValid(email) && isPassValid(password)) { }
-  // passing to the userServiceCLient
+  if (isEmailValid(email) && isPassValid(password)) {
+    //todo change to the default validation after tests
+    // passing to the userServiceCLient
 
-  userServiceCLient
-    .createUser(defaultData)
-    .then((res) => {
-      console.log("result:", res)
-      ctx.res = {okey: true}
-    })
-    .catch((err) => {
-      console.log(err)
+    try {
+      const result = await userServiceCLient.createUser(defaultData)
+      console.log(result)
+      if (result.okey) ctx.res = {okey: true}
+      else ctx.res = {okey: false}
+    } catch (err) {
+      console.log("error: ", err)
       ctx.res = {okey: false}
-      return
-    })
-  ctx.res = {okey: true}
+    }
+  }
+
+  //   .then((res) => {
+  //     console.log("result:", res)
+  //     ctx.res = {okey: true}
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //     ctx.res = {okey: false}
+  //     return
+  //   })
+  // ctx.res = {okey: true}
 }
 
 async function checkToken(ctx) {
@@ -105,17 +138,23 @@ async function checkToken(ctx) {
 
   let dbo = db.db("AuthService")
 
-  dbo.collection("Token").findOne({token}, (err, res) => {
-    console.log("Token Check Operation started")
-    if (err) {
-      console.log("Error")
-      ctx.res = {okey: false}
-    } else {
-      console.log("Token Check Success")
-      ctx.res = {okey: true}
-    }
+  const result = new Promise((resolve, reject) => {
+    dbo.collection("Token").findOne({token}, (err, res) => {
+      console.log("In promise")
+
+      if (err) reject(err)
+      resolve(res)
+    })
   })
-  ctx.res = {okey: true}
+  result
+    .then(() => {
+      ctx.res = {okey: true}
+    })
+    .catch((err) => {
+      console.log(err)
+      ctx.res = {okey: false}
+    })
+  // ctx.res = {okey: true}
 }
 
 async function getEmail(ctx) {}

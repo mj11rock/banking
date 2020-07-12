@@ -11,7 +11,10 @@ const TestButtons = (props) => {
     email: "mj11rock@gmail.com",
     password: "123",
   }
-  const Token = "test token"
+  const token = {
+    jwtToken:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl9pZCI6Ijk2Y2YwZWZjLTgxMjktNDM3ZS1iOTk3LTkwMDU3OGQyNjQyOSIsImVtYWlsIjoibWoxMXJvY2tAZ21haWwuY29tIiwiaWF0IjoxNTk0NTQyNzIzMzgzLCJlYXQiOjE1OTQ1NDI3MjM5ODMsImV4cCI6MTU5NDU0MjcyMzk4M30.EcsK4C0v-OCrCMKbx13VifjGvR0MUucQp3rEzy8mEJU",
+  }
   return (
     <div className="buttons-wrapper">
       <div className="btn-wrapper">
@@ -49,16 +52,22 @@ const TestButtons = (props) => {
         </button>
       </div>
       <div className="btn-wrapper">
-        <button className="btn">Logout</button>
+        <button
+          className="btn"
+          onClick={() => {
+            const result = Endpoint.call("logout", token)
+            result.then((res) => {
+              if (res.okey) console.log("logged out")
+              else console.log("error while loggin out")
+            })
+          }}
+        >
+          Logout
+        </button>
       </div>
       <div className="btn-wrapper">
         <button
           onClick={() => {
-            const token = {
-              jwtToken:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl9pZCI6IjU4YTUwNDgwLTgxMmUtNGJhYi05Y2QwLTRkMzkwZDVkZWRhOSIsImVtYWlsIjoibWoxMXJvY2tAZ21haWwuY29tIiwiaWF0IjoxNTk0NTAyMTM1ODg3LCJlYXQiOjE1OTQ1MDIxMzY0ODcsImV4cCI6MTU5NDUwMjEzNjQ4N30.Gvn58kCFs0J3sos7UNNzQ4L24PM_kNnMmPajAT4HIL4",
-            }
-
             const result = Endpoint.call("checkToken", token)
 
             result
