@@ -17,7 +17,7 @@ async function verifyUser(userData) {
   return new Promise((resolve, reject) => {
     let dbo = db.db("UserService")
     dbo.collection("User").findOne(userData, (err, data) => {
-      if (err) reject("Not found")
+      if (err || data === null) throw Error("not found")
       else resolve("Found")
     })
   })
@@ -28,6 +28,8 @@ async function checkLogin(ctx) {
 
   try {
     const result = await verifyUser(ctx.request.req)
+    console.log(result)
+
     ctx.res = {okey: true}
   } catch (error) {
     console.log(error)
@@ -44,7 +46,7 @@ async function isMailTaken(email) {
     dbo.collection("User").findOne({email}, (err, data) => {
       if (data) {
         reject("Mail aready taken")
-      } else {
+      } else if (data === null || err) {
         resolve("Mail ain't taken")
       }
     })
@@ -52,12 +54,9 @@ async function isMailTaken(email) {
 }
 
 async function insertNewUser(userData) {
-  console.log("in insert new unser: ", userData)
-
   return new Promise((resolve, reject) => {
     isMailTaken(userData.email)
       .then((res) => {
-        console.log(res)
         let dbo = db.db("UserService")
         dbo.collection("User").insertOne(userData, (err, data) => {
           if (err) reject(err)

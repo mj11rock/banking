@@ -94,8 +94,7 @@ async function logout(ctx) {
 async function register(ctx) {
   console.log("Registration Procedure")
   const {email, password, name} = ctx.request.req
-  let {cards} = ctx.request.req
-  cards = new Array()
+  let cards = new Array()
   const defaultData = {
     email,
     password,
@@ -118,43 +117,35 @@ async function register(ctx) {
       ctx.res = {okey: false}
     }
   }
+}
 
-  //   .then((res) => {
-  //     console.log("result:", res)
-  //     ctx.res = {okey: true}
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //     ctx.res = {okey: false}
-  //     return
-  //   })
-  // ctx.res = {okey: true}
+async function findTokenInDb(token) {
+  return new Promise((resolve, reject) => {
+    let dbo = db.db("AuthService")
+    dbo.collection("Token").findOne({token}, (err, res) => {
+      if (err) reject(err)
+      resolve(res)
+    })
+  })
 }
 
 async function checkToken(ctx) {
   console.log("Check Token procedure")
 
-  const {token} = ctx.request.req
-
-  let dbo = db.db("AuthService")
-
-  const result = new Promise((resolve, reject) => {
-    dbo.collection("Token").findOne({token}, (err, res) => {
-      console.log("In promise")
-
-      if (err) reject(err)
-      resolve(res)
-    })
-  })
-  result
-    .then(() => {
-      ctx.res = {okey: true}
-    })
-    .catch((err) => {
-      console.log(err)
+  const {jwtToken} = ctx.request.req
+  try {
+    const result = await findTokenInDb(jwtToken)
+    if (result === null) {
+      console.log("Token not found")
       ctx.res = {okey: false}
-    })
-  // ctx.res = {okey: true}
+    } else {
+      console.log("Token found")
+      ctx.res = {okey: true}
+    }
+  } catch (err) {
+    console.log(err)
+    ctx.res = {okey: false}
+  }
 }
 
 async function getEmail(ctx) {}

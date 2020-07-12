@@ -70,13 +70,14 @@ app.post("/register", (req, res) => {
 app.post("/checkToken", (req, res) => {
   console.log("Check Token Started...")
 
-  const {token} = req.body
-  AuthServiceClient.checkToken(token).then((result) => {
+  const {jwtToken} = req.body
+  AuthServiceClient.checkToken({jwtToken}).then((result) => {
     if (!result.okey) {
       res.send({okey: false})
-      return
+    } else {
+      console.log("Success!")
+      res.send({okey: true})
     }
-    res.send({okey: true})
   })
 })
 

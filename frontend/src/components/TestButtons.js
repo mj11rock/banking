@@ -13,7 +13,7 @@ const TestButtons = (props) => {
   }
   const token = {
     jwtToken:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl9pZCI6Ijk2Y2YwZWZjLTgxMjktNDM3ZS1iOTk3LTkwMDU3OGQyNjQyOSIsImVtYWlsIjoibWoxMXJvY2tAZ21haWwuY29tIiwiaWF0IjoxNTk0NTQyNzIzMzgzLCJlYXQiOjE1OTQ1NDI3MjM5ODMsImV4cCI6MTU5NDU0MjcyMzk4M30.EcsK4C0v-OCrCMKbx13VifjGvR0MUucQp3rEzy8mEJU",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl9pZCI6Ijg3YTQ1NjM5LTg1NTYtNDZjMC1hY2Y4LWQyN2JiODJiZmE3NSIsImVtYWlsIjoibWoxMXJvY2tAZ21haWwuY29tIiwiaWF0IjoxNTk0NTQ2NzQ3MjY2LCJlYXQiOjE1OTQ1NDY3NDc4NjYsImV4cCI6MTU5NDU0Njc0Nzg2Nn0.HJKoDaV1FKtG7xIho2kcHlpudGmVIOEo3b4pZ860iQY",
   }
   return (
     <div className="buttons-wrapper">
@@ -56,10 +56,14 @@ const TestButtons = (props) => {
           className="btn"
           onClick={() => {
             const result = Endpoint.call("logout", token)
-            result.then((res) => {
-              if (res.okey) console.log("logged out")
-              else console.log("error while loggin out")
-            })
+            result
+              .then((res) => {
+                if (res.okey) console.log("logged out")
+                else console.log("error while loggin out")
+              })
+              .catch((err) => {
+                console.log("Error: ", err)
+              })
           }}
         >
           Logout
@@ -72,8 +76,6 @@ const TestButtons = (props) => {
 
             result
               .then((res) => {
-                console.log(res)
-
                 if (res.okey) console.log("Token is ok")
                 else console.log("Err with token")
               })
